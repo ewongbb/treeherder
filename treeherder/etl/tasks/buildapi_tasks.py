@@ -11,7 +11,17 @@ from treeherder.etl.buildapi import (RunningJobsProcess,
                                      PendingJobsProcess,
                                      Builds4hJobsProcess)
 from treeherder.etl.pushlog import HgPushlogProcess
+from pympler import tracker
+import logging
+import json
 
+# tr = tracker.SummaryTracker()
+# tr.print_diff()
+# tr.print_diff()
+# tr.print_diff()
+# tr.print_diff()
+
+logger = logging.getLogger(__name__)
 
 @task(name='fetch-buildapi-pending', time_limit=3 * 60)
 def fetch_buildapi_pending():
@@ -38,6 +48,10 @@ def fetch_buildapi_build4h():
     the objectstore ingestion endpoint
     """
     Builds4hJobsProcess().run()
+    logger.warn("<><><> printing diff after")
+
+    # for line in tr.format_diff():
+    #     logger.warn("<> {}".format(line))
 
 
 @task(name='fetch-push-logs')
